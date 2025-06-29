@@ -21,6 +21,16 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
+          fetch-depth: 0
+
+      - name: Detect Git Tag
+        shell: pwsh
+        run: |
+          $TAG = git describe --tags --abbrev=0 --always 2>$null
+          if (-not $TAG) {
+            $TAG = "no-tag"
+          }
+          echo "tag=$TAG" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8
 
       - name: Setup Python environment
         uses: actions/setup-python@v4
@@ -49,3 +59,11 @@ jobs:
           yarn run electron-builder --${{ matrix.platform }} -p never | sed 's/identityName=.*$//'
           if (!(Test-Path out/win-unpacked/resources/app.asar.unpacked/node_modules/node-pty/build/Release/pty.node)) { throw 'node-pty not exist' }
 
+      - name: Upload Windows Artifacts
+        if: matrix.platform == 'win'
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-release ${{ env.tag }}
+          path: |
+            out/*.exe
+            out/*.zip
