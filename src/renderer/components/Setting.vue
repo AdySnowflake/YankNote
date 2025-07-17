@@ -5,7 +5,7 @@
     <div v-show="isReady" ref="refEditor" class="editor" @click="onClick" />
     <div class="action">
       <a href="javascript:void(0)" @click="showKeyboardShortcuts">{{ $t('setting-panel.change-keyboard-shortcuts') }}</a>
-      <button class="btn tr" @click="cancel">{{$t('cancel')}}</button>
+      <button class="btn tr" @click="close">{{$t('cancel')}}</button>
       <button class="btn primary tr" @click="ok">{{$t('ok')}}</button>
     </div>
   </div>
@@ -17,12 +17,10 @@ import { computed, defineComponent, onBeforeUnmount, onMounted, ref, watch } fro
 import { JSONEditor } from '@json-editor/json-editor'
 import * as api from '@fe/support/api'
 import { useToast } from '@fe/support/ui/toast'
-import { getThemeName, setTheme } from '@fe/services/theme'
 import { useI18n } from '@fe/services/i18n'
 import { fetchSettings, getSchema, writeSettings } from '@fe/services/setting'
 import { registerHook, removeHook, triggerHook } from '@fe/core/hook'
 import { basename } from '@fe/utils/path'
-import { getPurchased, showPremium } from '@fe/others/premium'
 import { getActionHandler } from '@fe/core/action'
 import { useModal } from '@fe/support/ui/modal'
 import store from '@fe/support/store'
@@ -141,19 +139,6 @@ export default defineComponent({
       // end: hack to use DOMPurify
       delete (window as any).DOMPurify
 
-      editor.watch('root.theme', () => {
-        const theme = editor.getEditor('root.theme').getValue()
-        if (getThemeName() !== theme) {
-          if (getPurchased()) {
-            setTheme(theme)
-          } else {
-            cancel()
-            toast.show('warning', t('premium.need-purchase', 'Theme'))
-            showPremium()
-          }
-        }
-      })
-
       editor.on('change', initResetButtonsDebounced)
 
       const reposEditor = editor.getEditor('root.repos')
@@ -180,16 +165,18 @@ export default defineComponent({
       initResetButtonsDebounced()
       isReady.value = true
 
-      triggerHook('SETTING_PANEL_AFTER_SHOW', {})
+      triggerHook('SETTING_PANEL_AFTER_SHOW', { editor })
     })
 
     setLanguage()
     registerHook('I18N_CHANGE_LANGUAGE', setLanguage)
     onBeforeUnmount(() => {
+      editor?.destroy()
       removeHook('I18N_CHANGE_LANGUAGE', setLanguage)
     })
 
-    const cancel = () => {
+    const close = async () => {
+      await triggerHook('SETTING_PANEL_BEFORE_CLOSE', { editor }, { breakable: true })
       emit('close')
     }
 
@@ -222,7 +209,7 @@ export default defineComponent({
 
         await writeSettings({ ...value })
       }
-      emit('close')
+      close()
     }
 
     const onClick = async (e: Event) => {
@@ -267,13 +254,13 @@ export default defineComponent({
     }
 
     function showKeyboardShortcuts () {
-      emit('close')
+      close()
       getActionHandler('keyboard-shortcuts.show-manager')()
     }
 
     watch(tab, updateTab)
 
-    return { isReady, tab, tabs, show, refEditor, cancel, ok, onClick, showKeyboardShortcuts }
+    return { isReady, tab, tabs, show, refEditor, close, ok, onClick, showKeyboardShortcuts }
   },
 })
 </script>
