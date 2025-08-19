@@ -18,7 +18,7 @@ import { JSONEditor } from '@json-editor/json-editor'
 import * as api from '@fe/support/api'
 import { useToast } from '@fe/support/ui/toast'
 import { useI18n } from '@fe/services/i18n'
-import { fetchSettings, getSchema, writeSettings } from '@fe/services/setting'
+import { fetchSettings, getSchema, showSettingPanel, writeSettings } from '@fe/services/setting'
 import { registerHook, removeHook, triggerHook } from '@fe/core/hook'
 import { basename } from '@fe/utils/path'
 import { getActionHandler } from '@fe/core/action'
@@ -239,6 +239,12 @@ export default defineComponent({
         if (errors.length) {
           console.log('json-editor', errors)
           errors.forEach((error: any) => {
+            const path = error.path
+            if (path) {
+              // highlight field
+              showSettingPanel(path.replace(/^root\./, ''))
+            }
+
             toast.show('warning', error.message)
             throw new Error(error.message)
           })
