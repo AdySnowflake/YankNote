@@ -69,3 +69,99 @@ export function copyText (text?: string) {
   document.body.removeChild(textarea)
   toast.show('info', t('copied'))
 }
+
+/**
+ * create a text highlighter
+ * @param container
+ * @param highlightName
+ * @param css
+ * @returns
+ */
+export function createTextHighlighter (
+  container: HTMLElement | undefined | null | (() => HTMLElement | undefined | null),
+  highlightName: string,
+  css: string | undefined | null | ((colorScheme: 'light' | 'dark') => string) = color => `color: ${color === 'dark' ? '#ffec99' : '#bd7f02'}`
+) {
+  let style: HTMLStyleElement | null = null
+
+  if (css) {
+    style = document.createElement('style')
+    style.dataset.highlightName = highlightName
+    style.textContent = `
+      @media screen {
+        html ::highlight(${highlightName}) {
+          ${typeof css === 'function' ? css('light') : css}
+        }
+
+        html[app-theme=dark] ::highlight(${highlightName}) {
+          ${typeof css === 'function' ? css('dark') : css}
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        html[app-theme=system] ::highlight(${highlightName}) {
+          ${typeof css === 'function' ? css('dark') : css}
+        }
+      }
+    `
+
+    document.head.appendChild(style)
+  }
+
+  const remove = () => {
+    CSS.highlights.delete(highlightName)
+  }
+
+  const dispose = () => {
+    remove()
+    style?.remove()
+  }
+
+  const highlight = (keyword: string | RegExp, append = false) => {
+    if (!append) {
+      remove()
+    }
+
+    keyword = typeof keyword === 'string' ? keyword.trim() : keyword
+
+    if (!keyword) {
+      return
+    }
+
+    const ranges: Range[] = []
+    const containerElement = typeof container === 'function' ? container() : container
+
+    if (!containerElement) {
+      return
+    }
+
+    const treeWalker = document.createTreeWalker(containerElement, NodeFilter.SHOW_TEXT)
+
+    let node: Node | null = null
+
+    do {
+      node = treeWalker.nextNode()
+      if (node && node.nodeType === Node.TEXT_NODE) {
+        const textContent = (node as Text).textContent || ''
+        const regex = typeof keyword === 'string' ? new RegExp(`(${keyword})`, 'gi') : keyword
+        let match: RegExpExecArray | null
+
+        while ((match = regex.exec(textContent)) !== null) {
+          const range = document.createRange()
+          range.setStart(node, match.index)
+          range.setEnd(node, match.index + match[0].length)
+          ranges.push(range)
+        }
+      }
+    } while (node)
+
+    CSS.highlights.set(highlightName, new Highlight(...ranges))
+
+    return remove
+  }
+
+  return {
+    dispose,
+    remove,
+    highlight,
+  }
+}
