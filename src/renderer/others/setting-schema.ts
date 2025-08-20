@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash-es'
 import { DEFAULT_EXCLUDE_REGEX } from '@share/misc'
 import { isMacOS, isWindows } from '@fe/support/env'
-import { FLAG_DISABLE_XTERM, FLAG_MAS } from '@fe/support/args'
+import { DOM_CLASS_NAME, FLAG_DISABLE_XTERM, FLAG_MAS } from '@fe/support/args'
 import { SettingSchema } from '@fe/types'
 
 const schema: SettingSchema = ({
@@ -438,7 +438,11 @@ const schema: SettingSchema = ({
       group: 'render',
       format: 'textarea',
       options: {
-        inputAttributes: { placeholder: 'e.g., .markdown-view .markdown-body a { color: red; }', style: 'height: 8em' }
+        inputAttributes: {
+          placeholder: 'e.g., .markdown-view .markdown-body a { color: red; }',
+          class: `je-textarea ${DOM_CLASS_NAME.CODE_SYNTAX_HIGHLIGHT_FONT}`,
+          style: 'height: 8em; background-color: var(--g-color-90);',
+        }
       },
     },
     shell: {

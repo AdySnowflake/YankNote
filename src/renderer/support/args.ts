@@ -75,4 +75,5 @@ export const DOM_CLASS_NAME = {
   TASK_LIST_ITEM_CHECKBOX: 'task-list-item-checkbox',
   NEW_PAGE: 'new-page',
   AVOID_PAGE_BREAK: 'avoid-page-break',
+  CODE_SYNTAX_HIGHLIGHT_FONT: 'code-syntax-highlight-font',
 }
