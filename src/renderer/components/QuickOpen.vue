@@ -446,9 +446,7 @@ export default defineComponent({
       updateSelected()
 
       nextTick(() => {
-        if (searchPartial.value) {
-          highlightText(searchPartial.value.query)
-        }
+        highlightText(searchPartial.value?.query || '')
       })
     })
 
