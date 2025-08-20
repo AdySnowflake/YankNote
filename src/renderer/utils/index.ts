@@ -85,6 +85,10 @@ export function createTextHighlighter (
   let style: HTMLStyleElement | null = null
 
   if (css) {
+    // remove existing styles
+    const existingStyle = document.querySelectorAll(`style[data-highlight-name="${highlightName}"]`)
+    existingStyle.forEach(style => style.remove())
+
     style = document.createElement('style')
     style.dataset.highlightName = highlightName
     style.textContent = `
@@ -116,10 +120,8 @@ export function createTextHighlighter (
     style?.remove()
   }
 
-  const highlight = (keyword: string | RegExp, append = false) => {
-    if (!append) {
-      remove()
-    }
+  const highlight = (keyword: string | RegExp) => {
+    remove()
 
     keyword = typeof keyword === 'string' ? keyword.trim() : keyword
 
