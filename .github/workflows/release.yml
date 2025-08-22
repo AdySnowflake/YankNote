@@ -22,13 +22,14 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Detect Git Tag
+      - name: Detect Latest Git Tag
         shell: pwsh
         run: |
           $TAG = git describe --tags --abbrev=0 --always 2>$null
           if (-not $TAG) {
             $TAG = "no-tag"
           }
+          echo "Detected Tag: $TAG"
           echo "tag=$TAG" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8
 
       - name: Setup Python environment
