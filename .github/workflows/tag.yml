@@ -1,0 +1,25 @@
+name: Test Tags Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Detect Latest Git Tag
+        shell: pwsh
+        run: |
+          $TAG = git describe --tags --abbrev=0 --always 2>$null
+          if (-not $TAG) {
+            $TAG = "no-tag"
+          }
+          echo "Detected Tag: $TAG"
+          echo "tag=$TAG" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8
