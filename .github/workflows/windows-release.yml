@@ -1,0 +1,69 @@
+name: Manual Build - Windows
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-2022
+            platform: 'win'
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Set git config
+        run: |
+          git config --global core.autocrlf false
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          fetch-depth: 10
+
+      - name: Detect Latest Git Tag
+        shell: pwsh
+        run: |
+          $TAG = git describe --tags --abbrev=0 --always 2>$null
+          if (-not $TAG) {
+            $TAG = "no-tag"
+          }
+          echo "Detected Tag: $TAG"
+          echo "tag=$TAG" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8
+
+      - name: Setup Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.5'
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 22.x
+
+      - name: Install
+        run: |
+          yarn install
+          yarn electron-rebuild
+          node scripts/download-pandoc.js
+          node scripts/download-plantuml.js
+
+      - name: Build
+        run: |
+          yarn build
+
+      - name: Electron-Win
+        if: matrix.platform == 'win'
+        run: |
+          yarn run electron-builder --${{ matrix.platform }} -p never | sed 's/identityName=.*$//'
+          if (!(Test-Path out/win-unpacked/resources/app.asar.unpacked/node_modules/node-pty/build/Release/pty.node)) { throw 'node-pty not exist' }
+
+      - name: Upload Windows Artifacts
+        if: matrix.platform == 'win'
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-release ${{ env.tag }}
+          path: |
+            out/*.exe
+            out/*.zip
