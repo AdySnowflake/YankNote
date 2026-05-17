@@ -3,8 +3,11 @@ name: Sync Upstream
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  mirror:
+  sync:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,4 +26,5 @@ jobs:
           git remote add upstream https://github.com/purocean/yn.git
           git fetch upstream --tags
           git merge upstream/master --no-edit
+          git push
           git push --tags
