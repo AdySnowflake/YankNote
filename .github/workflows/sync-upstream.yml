@@ -3,16 +3,13 @@ name: Sync Upstream
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -24,7 +21,7 @@ jobs:
       - name: Sync from upstream
         run: |
           git remote add upstream https://github.com/purocean/yn.git
-          git fetch upstream --tags
+          git fetch upstream --force --tags
           git merge upstream/master --no-edit
-          git push
-          git push --tags
+          git push origin master
+          git push origin --force --tags
