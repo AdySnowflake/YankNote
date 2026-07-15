@@ -173,10 +173,6 @@ function duplicateMultilineNodes (element: HTMLElement) {
 function wrap (code: string, lang: string, lineNumber: boolean) {
   let html = code
 
-  if (lang === 'text') {
-    html = escape(code)
-  }
-
   if (lineNumber) {
     const element = document.createElement('code')
     element.innerHTML = html
@@ -229,7 +225,7 @@ function highlight (str: string, lang: string, lineNumber: boolean) {
     logger.warn(`Syntax highlight for language "${lang}" is not supported.`)
   }
 
-  return wrap(str, 'text', lineNumber)
+  return wrap(escape(str), 'text', lineNumber)
 }
 
 export default {
@@ -266,6 +262,24 @@ export default {
           ?.text
 
         if (code) {
+          if (options.codeCopyButton) {
+            node.dataset.code = code
+          }
+
+          if (options.codeLineNumbers) {
+            if (!options.highlightCode) {
+              const wrapper = document.createElement('div')
+              wrapper.innerHTML = highlight(code, 'text', true)
+
+              if (options.codeCopyButton) {
+                wrapper.firstElementChild?.setAttribute('data-code', code)
+              }
+
+              node.outerHTML = wrapper.innerHTML
+            }
+            return
+          }
+
           if (options.highlightCode) {
             if (options.inlineStyle || options.includeStyle) {
               node.outerHTML = ctx.lib.juice(

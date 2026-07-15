@@ -4,12 +4,18 @@ import { JSONRPCClient, JSONRPCClientChannel, JSONRPCError, JSONRPCRequest, JSON
 type Ctx = {
   setting: {
     showSettingPanel: (key?: string) => void
+    getSchemaForMcp: () => Promise<any>
+    getSettingsForMcp: () => Promise<Record<string, any>>
   },
   doc: {
     switchDocByPath: (path: string) => Promise<void>
   },
   base: {
     triggerDeepLinkOpen: (url: string) => Promise<void>
+  },
+  action: {
+    getRawActions: () => Promise<any[]>,
+    executeAction: (name: string, ...args: any[]) => Promise<any>
   }
 }
 

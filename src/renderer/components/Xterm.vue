@@ -45,7 +45,10 @@ export default defineComponent({
       if (xterm) {
         const dark = getColorScheme() === 'dark'
         OneHalfDark.background = '#1a1b1d'
-        OneHalfLight.selection = 'rgba(0, 0, 0, .1)'
+        OneHalfLight.selection = '#1d4ed8'
+        OneHalfLight.selectionBackground = '#1d4ed8'
+        OneHalfLight.selectionForeground = '#f8fafc'
+        OneHalfLight.selectionInactiveBackground = '#bfdbfe'
         xterm.options.theme = dark ? OneHalfDark : OneHalfLight
       }
     }
@@ -192,5 +195,9 @@ export default defineComponent({
 <style scoped>
 .xterm-dom ::v-deep(textarea) {
   transition: none;
+}
+
+.xterm-dom ::v-deep(.xterm-screen) {
+  overflow-x: clip;
 }
 </style>

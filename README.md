@@ -76,17 +76,18 @@ For more information on how to use the following functions, please see [characte
 
 ## Changelogs
 
-### [v3.87.1](https://github.com/purocean/yn/releases/tag/v3.87.1) 2026-01-23
+### [v3.92.1](https://github.com/purocean/yn/releases/tag/v3.92.1) 2026-07-12
 
-[Windows](https://github.com/purocean/yn/releases/download/v3.87.1/Yank-Note-win-x64-3.87.1.exe) | [macOS arm64](https://github.com/purocean/yn/releases/download/v3.87.1/Yank-Note-mac-arm64-3.87.1.dmg) | [macOS x64](https://github.com/purocean/yn/releases/download/v3.87.1/Yank-Note-mac-x64-3.87.1.dmg) | [Linux AppImage](https://github.com/purocean/yn/releases/download/v3.87.1/Yank-Note-linux-x86_64-3.87.1.AppImage) | [Linux deb](https://github.com/purocean/yn/releases/download/v3.87.1/Yank-Note-linux-amd64-3.87.1.deb)
+[Windows](https://github.com/purocean/yn/releases/download/v3.92.1/Yank-Note-win-x64-3.92.1.exe) | [macOS arm64](https://github.com/purocean/yn/releases/download/v3.92.1/Yank-Note-mac-arm64-3.92.1.dmg) | [macOS x64](https://github.com/purocean/yn/releases/download/v3.92.1/Yank-Note-mac-x64-3.92.1.dmg) | [Linux AppImage](https://github.com/purocean/yn/releases/download/v3.92.1/Yank-Note-linux-x86_64-3.92.1.AppImage) | [Linux deb](https://github.com/purocean/yn/releases/download/v3.92.1/Yank-Note-linux-amd64-3.92.1.deb)
 
-1. feat: Support displaying OpenCode in the sidebar
-2. feat: Search panel supports remembering expanded results state
-3. feat: Support list collapsing in preview area, needs to be enabled in `Settings - Rendering`
-4. feat: Open external files as read-only by default
-5. feat: Optimize list number auto-fill experience
-6. feat(plugin): Support `ctx.workbench.ContentRightSide.registerPanel` for registering sidebar panel components
-7. feat(plugin): Add `EDITOR_ATTEMPT_READONLY_EDIT` Hook
+1. feat(markdown): Upgrade Markdown-it to 14.3.0 and add CJK-friendly emphasis parsing for Chinese and Japanese text
+2. feat(markdown): Add a raw HTML container that can render HTML blocks mixed with Markdown content
+3. feat(plugin): Add range-based text highlighting APIs for extensions and preview interactions
+4. feat(editor): Always show the floating editor hint so the feature remains discoverable
+5. fix(markdown): Avoid double escaping plain-text code fences with a language marker
+6. fix(editor): Restore HTML and other non-Markdown text files correctly when the app starts
+7. fix(terminal): Prevent IME layout offsets caused by horizontal terminal overflow
+8. chore: Upgrade Electron to 41 and update dependencies and security-related transitive packages
 
 [More release notes](https://github.com/purocean/yn/releases)
 

@@ -10,6 +10,7 @@ const data = {
   'ok': 'OK',
   'demo-tips': 'Some features are not available in DEMO mode.',
   'more': 'More',
+  'copy': 'Copy',
   'copied': 'Copied',
   'others': 'Others',
   'insert-different-repo-doc': 'Documents from different repository cannot be inserted',
@@ -49,6 +50,11 @@ const data = {
     'readonly-desc': 'External files are read-only by default. You can [enable editing for this external file](%s) or [change external file readonly settings](%s).',
     'enable-edit': 'Enable Editing for This External File',
     'open-setting': 'Change External File Readonly Settings',
+  },
+  'floating-editor': {
+    'show-editor': 'Show Editor',
+    'preview-hint': '%s + click preview text to open the floating editor',
+    'resize': 'Resize',
   },
   'trigger-suggestions': 'Trigger Suggestions',
   'table-of-contents': 'Table of Contents',
@@ -437,6 +443,7 @@ const data = {
         'md-typographer': 'Enable some language-neutral replacement + quotes beautification',
         'md-sup': 'Enable sup syntax: 29^th^',
         'md-sub': 'Enable sub syntax: H~2~O',
+        'md-cj-friendly': 'Enable CJK-friendly emphasis parsing',
         'md-emoji': 'Enable emoji syntax: :smile:',
         'list-collapsible': 'Enable collapsible lists - Click to collapse/expand nested lists',
         'multimd-multiline': '[markdown-it-multimd-table]: Enable multiline syntax',
@@ -458,6 +465,8 @@ const data = {
       'assets-desc': 'Relative or absolute path (in document repository). Variables: docName, docBasename, docSlug, docHash, docPath, date.',
       'assets': {
         'path-type': 'Path Type',
+        'image-name': 'Paste Image Name',
+        'image-name-desc': 'Pasted image filename template without extension: {time:FORMAT}, {hash:N}.',
       },
       'shell': 'Shell',
       'envs': 'Environments',
@@ -496,6 +505,9 @@ const data = {
       'hide-main-window-on-startup': 'Hide Main Window on Startup',
       'keep-running-after-closing-window': 'Keep Running after Closing Window',
     }
+  },
+  'plugin-mcp-server': {
+    'enable': 'Enable MCP Server (Streamable HTTP)',
   },
   'quick-open': {
     'input-placeholder': 'Type characters...',
@@ -651,6 +663,7 @@ const data = {
     'inline-image': 'Inline Local Image',
     'upload-image': 'Upload Local Image',
     'highlight-code': 'Highlight Code',
+    'line-numbers': 'Code Line Numbers',
     'rt': 'Rich Text',
     'complete': 'Conversion completed, click OK to copy',
     'copy-tips': 'If you need to copy part of the content, you need select it in the preview area first.',

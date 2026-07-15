@@ -23,7 +23,13 @@ export default {
       }
 
       if (initFilePath) {
-        switchDoc({ type: 'file', repo: initRepoName || currentRepo!.name, name: basename(initFilePath), path: initFilePath })
+        return switchDoc({ type: 'file', repo: initRepoName || currentRepo!.name, name: basename(initFilePath), path: initFilePath })
+      }
+
+      // The persisted current file only contains metadata. Reload it explicitly
+      // so non-Markdown plain text files also get their content on startup.
+      if (store.state.currentFile && store.state.currentFile.status !== 'loaded') {
+        return switchDoc(store.state.currentFile, { force: true })
       }
     }
 
@@ -78,6 +84,8 @@ export default {
         name: `base.switch-repository-${i}`,
         description: i === 0 ? ctx.i18n.t('switch-the-last-repo') : ctx.i18n.t('switch-repo-n', String(i)),
         forUser: true,
+        forMcp: true,
+        mcpDescription: `Switch to repository ${i === 0 ? 'last' : i}. No args. No return.`,
         keys: [ctx.keybinding.Alt, String(i)],
         handler: () => {
           const repos = ctx.repo.getAllRepos()
@@ -89,5 +97,19 @@ export default {
         },
       })
     }
+
+    ctx.action.registerAction({
+      name: 'base.list-repositories',
+      description: '列出仓库',
+      forMcp: true,
+      mcpDescription: 'List repositories. No args. Return: Repo[] with name, path, enableIndexing.',
+      handler: () => {
+        return ctx.repo.getAllRepos().map(repo => ({
+          name: repo.name,
+          path: repo.path,
+          enableIndexing: repo.enableIndexing,
+        }))
+      },
+    })
   }
 } as Plugin
