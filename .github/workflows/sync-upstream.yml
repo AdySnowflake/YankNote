@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -21,6 +21,7 @@ jobs:
       - name: Sync from upstream
         run: |
           git remote add upstream https://github.com/purocean/yn.git
-          git fetch upstream --tags
-          git merge upstream/master --no-edit
-          git push --tags
+          git fetch upstream --force --tags
+          git merge upstream/develop --no-edit
+          git push origin develop
+          git push origin --force --tags
