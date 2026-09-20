@@ -76,14 +76,18 @@
 
 ## 更新日志
 
-### [v3.90.0](https://github.com/purocean/yn/releases/tag/v3.90.0) 2026-05-16
+### [v3.93.0](https://github.com/purocean/yn/releases/tag/v3.93.0) 2026-09-19
 
-[Windows](https://github.com/purocean/yn/releases/download/v3.90.0/Yank-Note-win-x64-3.90.0.exe) | [macOS arm64](https://github.com/purocean/yn/releases/download/v3.90.0/Yank-Note-mac-arm64-3.90.0.dmg) | [macOS x64](https://github.com/purocean/yn/releases/download/v3.90.0/Yank-Note-mac-x64-3.90.0.dmg) | [Linux AppImage](https://github.com/purocean/yn/releases/download/v3.90.0/Yank-Note-linux-x86_64-3.90.0.AppImage) | [Linux deb](https://github.com/purocean/yn/releases/download/v3.90.0/Yank-Note-linux-amd64-3.90.0.deb)
+[Windows](https://github.com/purocean/yn/releases/download/v3.93.0/Yank-Note-win-x64-3.93.0.exe) | [macOS arm64](https://github.com/purocean/yn/releases/download/v3.93.0/Yank-Note-mac-arm64-3.93.0.dmg) | [macOS x64](https://github.com/purocean/yn/releases/download/v3.93.0/Yank-Note-mac-x64-3.93.0.dmg) | [Linux AppImage](https://github.com/purocean/yn/releases/download/v3.93.0/Yank-Note-linux-x86_64-3.93.0.AppImage) | [Linux deb](https://github.com/purocean/yn/releases/download/v3.93.0/Yank-Note-linux-amd64-3.93.0.deb)
 
-1. feat: 增加 MCP 设置排查工具，支持读取设置结构、读取当前设置值，以及打开设置面板并定位到指定字段或分组
-2. feat: 增加粘贴图片文件名模板，支持时间和哈希占位符
-3. feat: 增加 CJ-friendly Markdown 渲染选项，优化中文、日文文本中的强调解析
-4. feat(editor): 点击预览行时聚焦浮动编辑器，并在浮动编辑器失焦后自动关闭
+1. feat(ui): 重构桌面端标题栏，整合文件标签、原生窗口按钮、导航操作、窗口拖动和置顶入口，释放更多纵向空间
+2. feat(keybinding): 增加可选的“非 US 键盘布局（Beta）”模式，提升编辑器、工作台和应用快捷键的录制与匹配准确性
+3. feat(markdown): 增加全局标题编号设置，支持预览和导出，并允许单篇文档通过 front matter 覆盖
+4. feat(terminal): 增加终端字体和字号设置
+5. fix(editor): 允许只读模式下由程序更新内容，修复外部只读文件无法正确加载源码的问题
+6. fix(export): 改善 PDF 导出窗口对嵌入内容的兼容性，包括 Drawio 图形
+7. style(markdown): 调柔浅色和暗色主题下的行内代码背景
+8. chore: Electron 升级到 41.10.3，并更新依赖和安全相关的间接依赖
 
 [更多发布说明](https://github.com/purocean/yn/releases)
 
